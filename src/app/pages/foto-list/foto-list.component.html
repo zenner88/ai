@@ -1,0 +1,32 @@
+<div class="container p-2">
+    <div class="row bg-light p-2">
+        <h2 class="bg-dark text-light">List Foto</h2>
+        <div class="col-2 p-2" *ngFor="let hay of haystackList">
+            <img src="https://aimachine.brimob.id/upload-images/ai-uploads/haystack/{{hay.filename}}" alt="" style="max-width: 150px;">
+        </div>
+        <h2 class="bg-dark text-light">List Data</h2>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Launch demo modal
+          </button>
+        <div class="col-2 p-2" *ngFor="let pot of potraitList">
+            <img src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/{{pot.portrait_filename}}" alt="" style="max-width: 150px;">
+        </div>
+    </div>
+</div>
+
+<!-- Modal Upload -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Upload</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3">
+                <input class="form-control" type="file" id="formFile">
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
