@@ -77,9 +77,22 @@
                     </div>
                 </div>
                 <div class="card-footer text-muted">
-                    <button type="button" class="close" aria-label="Close" (click)="identify()">
+                    <button type="button" class="btn btn-primary mx-2" aria-label="Close" (click)="identify()">
                         <span aria-hidden="true">Identify</span>
                     </button>
+                    <button type="button" class="btn btn-danger" aria-label="Close" (click)="clearSelection()">
+                        <span aria-hidden="true">Clear</span>
+                    </button>
+                </div>
+            </div>
+            <div class="card text-center mt-2">
+                <div class="card-header">
+                  Result
+                </div>
+                <div class="card-body">
+                    <div class="row" id="result">
+                        
+                    </div>
                 </div>
             </div>
         </div>

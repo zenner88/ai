@@ -4,7 +4,8 @@ import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { FileUploadService } from 'src/app/file-upload.service';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import * as $ from "jquery";
 declare var window: any;
 @Component({
   selector: 'app-foto-list',
@@ -17,6 +18,8 @@ export class FotoListComponent implements OnInit {
   errorMessage: any;
   potraitLength: any;
   potraitList: any = [];
+  selectedHaystack: any = [];
+  selectedPortrait: any = [];
   modalHaystack: any;
   closeModal: string | undefined;
 
@@ -25,6 +28,7 @@ export class FotoListComponent implements OnInit {
   message: string[] = [];
   previews: string[] = [];
   imageInfos?: Observable<any>;
+  resultIdentify: any;
 
   constructor(private http: HttpClient, private global: GlobalService, private modalService: NgbModal, private uploadService: FileUploadService, private elementRef:ElementRef) { }
 
@@ -207,6 +211,9 @@ export class FotoListComponent implements OnInit {
     console.log(index.filename, "ADD!!!");
     var d1 = this.elementRef.nativeElement.querySelector('#selectedFoto');
     d1.insertAdjacentHTML('beforeend', '<div class="col-6 p-2"><div class="content"><div class="content-overlay"></div><img lass="content-image p-2" src="http://aimachine.brimob.id/upload-images/ai-uploads/haystack/'+index.filename+'" alt="" style="max-width: 150px;"><div class="content-details"><i class="fa fa-trash text-light" aria-hidden="true"></i></div></div></div>');
+
+    this.selectedHaystack.push(index.filename);
+    console.log(this.selectedHaystack, "selected haystack");
   }
 
   deleteFoto2(index: any){
@@ -245,11 +252,38 @@ export class FotoListComponent implements OnInit {
     console.log(index.portrait_filename, "ADD!!!");
     var d1 = this.elementRef.nativeElement.querySelector('#selectedFoto');
     d1.insertAdjacentHTML('beforeend', '<div class="col-6 p-2"><div class="content"><div class="content-overlay"></div><img lass="content-image p-2" src="http://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+index.portrait_filename+'" alt="" style="max-width: 150px;"><div class="content-details"><i class="fa fa-trash text-light" aria-hidden="true"></i></div></div></div>');
+    this.selectedPortrait.push(index.portrait_filename);
+    console.log(this.selectedPortrait, "selected portrait");
   }
 
   identify(){
-    var d1 = this.elementRef.nativeElement.querySelector('#selectedFoto');
-    console.log(d1, "Identify");
+    $("#result").html("");
+    // Call Potrait LIst Foto 
+    let body = {
+      "threshold" : 97,
+      "portraits" : this.selectedPortrait,
+      "haystacks" : this.selectedHaystack
+    };
+    this.http.post<any>(this.global.address+this.global.find_match_portrait, body).subscribe({
+      next: data3 => {
+        this.resultIdentify = data3;
+        console.log(data3);
+        var d1 = this.elementRef.nativeElement.querySelector('#result');
+        d1.insertAdjacentHTML('beforeend', '<div class="col-6 p-2"><div class="content"><div class="content-overlay"></div><img lass="content-image p-2" src="http://aimachine.brimob.id/upload-images/ai-uploads/output/'+data3.output_file+'" alt="" style="max-width: 300px;"><div class="content-details"><i class="fa fa-trash text-light" aria-hidden="true"></i></div></div></div>');
+      },
+      error: error => {
+          this.errorMessage = error.message;
+          console.error('There was an error!', error);
+      }
+    })
+  }
+
+  clearSelection(){
+    $("#selectedFoto").html("");
+    $("#result").html("");
+
+    this.selectedHaystack = [];
+    this.selectedPortrait = [];
   }
   
 }
