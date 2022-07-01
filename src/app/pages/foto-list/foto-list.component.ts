@@ -274,6 +274,8 @@ export class FotoListComponent implements OnInit {
       error: error => {
           this.errorMessage = error.message;
           console.error('There was an error!', error);
+          var d1 = this.elementRef.nativeElement.querySelector('#result');
+          d1.insertAdjacentHTML('beforeend', '<div class="text-center text-danger">Not Found!</div>');
       }
     })
   }
