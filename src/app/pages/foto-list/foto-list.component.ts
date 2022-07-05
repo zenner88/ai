@@ -28,7 +28,7 @@ export class FotoListComponent implements OnInit {
   message: string[] = [];
   previews: string[] = [];
   imageInfos?: Observable<any>;
-  resultIdentify: any;
+  resultIdentify: any =[];
 
   constructor(private http: HttpClient, private global: GlobalService, private modalService: NgbModal, private uploadService: FileUploadService, private elementRef:ElementRef) { }
 
@@ -210,7 +210,7 @@ export class FotoListComponent implements OnInit {
   addFoto(index: any){
     console.log(index.filename, "ADD!!!");
     var d1 = this.elementRef.nativeElement.querySelector('#selectedFoto');
-    d1.insertAdjacentHTML('beforeend', '<div class="col-6 p-2"><div class="content"><div class="content-overlay"></div><img lass="content-image p-2" src="http://aimachine.brimob.id/upload-images/ai-uploads/haystack/'+index.filename+'" alt="" style="max-width: 150px;"><div class="content-details"><i class="fa fa-trash text-light" aria-hidden="true"></i></div></div></div>');
+    d1.insertAdjacentHTML('beforeend', '<div class="col-6 p-2"><div class="content"><div class="content-overlay"></div><img lass="content-image p-2" src="http://aimachine.brimob.id/upload-images/ai-uploads/haystack/'+index.filename+'" alt="" style="max-width: 100px;"><div class="content-details"><i class="fa fa-trash text-light" aria-hidden="true"></i></div></div></div>');
 
     this.selectedHaystack.push(index.filename);
     console.log(this.selectedHaystack, "selected haystack");
@@ -251,7 +251,7 @@ export class FotoListComponent implements OnInit {
   addFoto2(index: any){
     console.log(index.portrait_filename, "ADD!!!");
     var d1 = this.elementRef.nativeElement.querySelector('#selectedFoto');
-    d1.insertAdjacentHTML('beforeend', '<div class="col-6 p-2"><div class="content"><div class="content-overlay"></div><img lass="content-image p-2" src="http://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+index.portrait_filename+'" alt="" style="max-width: 150px;"><div class="content-details"><i class="fa fa-trash text-light" aria-hidden="true"></i></div></div></div>');
+    d1.insertAdjacentHTML('beforeend', '<div class="col-6 p-2"><div class="content"><div class="content-overlay"></div><img lass="content-image p-2" src="http://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+index.portrait_filename+'" alt="" style="max-width: 100px;"><div class="content-details"><i class="fa fa-trash text-light" aria-hidden="true"></i></div></div></div>');
     this.selectedPortrait.push(index.portrait_filename);
     console.log(this.selectedPortrait, "selected portrait");
   }
@@ -266,10 +266,11 @@ export class FotoListComponent implements OnInit {
     };
     this.http.post<any>(this.global.address+this.global.find_match_portrait, body).subscribe({
       next: data3 => {
-        this.resultIdentify = data3;
         console.log(data3);
         var d1 = this.elementRef.nativeElement.querySelector('#result');
-        d1.insertAdjacentHTML('beforeend', '<div class="col-6 p-2"><div class="content"><div class="content-overlay"></div><img lass="content-image p-2" src="http://aimachine.brimob.id/upload-images/ai-uploads/output/'+data3.output_file+'" alt="" style="max-width: 300px;"><div class="content-details"><i class="fa fa-trash text-light" aria-hidden="true"></i></div></div></div>');
+        d1.insertAdjacentHTML('beforeend', '<div class="col-6 p-2"><div class="content"><div class="content-overlay"></div><img lass="content-image p-2" src="http://aimachine.brimob.id/upload-images/ai-uploads/output/'+data3.output_file+'" alt="" style="max-width: 250px;"><div class="content-details"><i class="fa fa-trash text-light" aria-hidden="true"></i></div></div></div>');
+        this.resultIdentify = data3.result[0].match_found;
+        console.log("ressss",this.resultIdentify);
       },
       error: error => {
           this.errorMessage = error.message;

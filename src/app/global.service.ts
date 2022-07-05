@@ -6,10 +6,10 @@ import { HttpHeaders } from '@angular/common/http';
 export class GlobalService {
   
   constructor() { }
-  // private header = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
-  // public readonly headers = { headers: this.header };
+  private header = new HttpHeaders().set('Access-Control-Allow-Origin', `*`);
+  public readonly headers = { headers: this.header };
 
-  public readonly address: string = 'http://aimachine.brimob.id:5000/ai';  
+  public readonly address: string = 'https://aimachine.brimob.id:444/ai';  
   public readonly upload_portrait: string = '/upload_portrait';  
   public readonly find_match_portrait: string = '/find_match_portrait';  
   public readonly upload_haystack: string = '/upload_haystack';  

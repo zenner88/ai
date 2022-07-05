@@ -1,6 +1,6 @@
-<div class="container p-2">
+<div class="container-fluid p-2">
     <div class="row">
-        <div class="col-8">
+        <div class="col-6">
             <div class="card">
                 <div class="card-header">
                     <div class="row">
@@ -19,7 +19,7 @@
                         <div class="col-3 p-2" *ngFor="let hay of haystackList">
                             <div class="content">
                                 <div class="content-overlay"></div>
-                                <img class="content-image" src="http://aimachine.brimob.id/upload-images/ai-uploads/haystack/{{hay.filename}}" alt="" style="max-width: 150px;">
+                                <img class="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/haystack/{{hay.filename}}" alt="" style="max-width: 150px;">
                                 <div class="content-details">
                                     <div class="fixed-top">
                                         <i class="fa fa-trash text-light" aria-hidden="true" (click)="deleteFoto(hay)"></i>
@@ -51,7 +51,7 @@
                         <div class="col-3 p-2" *ngFor="let pot of potraitList">
                             <div class="content">
                                 <div class="content-overlay"></div>
-                                <img class="content-image" src="http://aimachine.brimob.id/upload-images/ai-uploads/portrait/{{pot.portrait_filename}}" alt="" style="max-width: 150px;">
+                                <img class="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/{{pot.portrait_filename}}" alt="" style="max-width: 150px;">
                                 <div class="content-details">
                                     <div class="fixed-top">
                                         <i class="fa fa-trash text-light" aria-hidden="true" (click)="deleteFoto2(pot)"></i>
@@ -66,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-3">
             <div class="card text-center">
                 <div class="card-header">
                   Selected Foto
@@ -85,16 +85,25 @@
                     </button>
                 </div>
             </div>
-            <div class="card text-center mt-2">
-                <div class="card-header">
-                  Result
+        </div>
+        <div class="col-3">
+          <div class="card text-center">
+            <div class="card-header">
+              Result
+            </div>
+            <div class="card-body">
+                <div class="row" id="result">
                 </div>
-                <div class="card-body">
-                    <div class="row" id="result">
-                        
-                    </div>
+                <div class="row">
+                  <div class="col-6 p-1" *ngFor="let res of resultIdentify">
+                      <div class="content">
+                          <img class="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/{{res.portrait}}" alt="" style="max-width: 100px;">
+                      </div>
+                      <p>Match Percentage : {{res.match_percentage}}</p>
+                  </div>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </div>
