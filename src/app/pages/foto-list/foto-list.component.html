@@ -1,11 +1,11 @@
 <div class="container-fluid p-2">
     <div class="row">
-        <div class="col-6">
-            <div class="card">
-                <div class="card-header">
+        <div class="col-5 py-2 px-md-1">
+            <div class="card bgBox">
+                <div class="card-header bgBox text-light">
                     <div class="row">
                         <div class="col-9">
-                            List Foto
+                            Foto Kejadian
                         </div>
                         <div class="col-3">
                             <div class="pull-right">
@@ -16,7 +16,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-3 p-2" *ngFor="let hay of haystackList">
+                        <div class="col-3 p-md-1" *ngFor="let hay of haystackList">
                             <div class="content">
                                 <div class="content-overlay"></div>
                                 <img class="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/haystack/{{hay.filename}}" alt="" style="max-width: 150px;">
@@ -33,11 +33,11 @@
                     </div>
                 </div>
             </div>
-            <div class="card mt-2">
-                <div class="card-header">
+            <div class="card mt-2 bgBox">
+                <div class="card-header bgBox text-light">
                     <div class="row">
                         <div class="col-9">
-                            List Potrait / E-KTP
+                            Foto E-KTP
                         </div>
                         <div class="col-3">
                             <div class="pull-right">
@@ -66,42 +66,55 @@
                 </div>
             </div>
         </div>
-        <div class="col-3">
-            <div class="card text-center">
-                <div class="card-header">
+        <div class="col-3 py-2 px-md-1">
+            <div class="card text-center bgBox">
+                <div class="card-header text-light bgBox">
                   Selected Foto
                 </div>
                 <div class="card-body">
-                    <div class="row" id="selectedFoto">
-                        
+                  <div class="card bgBox">
+                    <div class="row" id="selectedFoto1">
                     </div>
+                  </div>
+                  <div class="card bgBox mt-2">
+                    <div class="row" id="selectedFoto2">
+                    </div>
+                  </div>
                 </div>
-                <div class="card-footer text-muted">
-                    <button type="button" class="btn btn-primary mx-2" aria-label="Close" (click)="identify()">
-                        <span aria-hidden="true">Identify</span>
-                    </button>
-                    <button type="button" class="btn btn-danger" aria-label="Close" (click)="clearSelection()">
-                        <span aria-hidden="true">Clear</span>
-                    </button>
+                <div class="card-footer text-muted bgBox">
+                  <div class="row">
+                    <div class="col-12 col-md-6 btn btn-2" (click)="clearSelection()">
+                      <span>Clear</span>
+                    </div>
+                    <div class="col-12 col-md-6 btn btn-three" (click)="identify()">
+                      <span>Identify</span>
+                    </div>
+                  </div>
                 </div>
             </div>
         </div>
-        <div class="col-3">
-          <div class="card text-center">
-            <div class="card-header">
+        <div class="col-4 py-2 px-md-1">
+          <div class="card text-center bgBox">
+            <div class="card-header bgBox text-light">
               Result
             </div>
             <div class="card-body">
-                <div class="row" id="result">
-                </div>
-                <div class="row">
-                  <div class="col-6 p-1" *ngFor="let res of resultIdentify">
-                      <div class="content">
-                          <img class="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/{{res.portrait}}" alt="" style="max-width: 100px;">
-                      </div>
-                      <p>Match Percentage : {{res.match_percentage}}</p>
+              <div class="row">
+                <div class="col-12 col-md-8">
+                  <div class="row" id="result">
                   </div>
                 </div>
+                <div class="col-12 col-md-4">
+                  <div class="row">
+                    <div class="col-12" id="percent" *ngFor="let res of resultIdentify">
+                      <div class="card bg-dark mb-2">
+                        <img class="card-img-top" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/{{res.portrait}}" alt="Card image cap">
+                          <p class="text-center text-light my-2" style="font-size: 12px;">Match (%) : {{res.match_percentage | number : '1.2-2'}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
         </div>
         </div>
