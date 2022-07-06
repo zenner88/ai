@@ -251,7 +251,7 @@ export class FotoListComponent implements OnInit {
   addFoto2(index: any){
     console.log(index.portrait_filename, "ADD!!!");
     var d1 = this.elementRef.nativeElement.querySelector('#selectedFoto2');
-    d1.insertAdjacentHTML('beforeend', '<div class="col-12 col-md-6 p-md-1"><img lass="content-image" src="http://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+index.portrait_filename+'" alt="" style="max-width: 100px;"></div>');
+    d1.insertAdjacentHTML('beforeend', '<div class="col-12 col-md-4 p-md-1"><img lass="content-image" src="http://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+index.portrait_filename+'" alt="" style="max-width: 100px;"></div>');
     this.selectedPortrait.push(index.portrait_filename);
     console.log(this.selectedPortrait, "selected portrait");
   }
@@ -271,6 +271,7 @@ export class FotoListComponent implements OnInit {
         d1.insertAdjacentHTML('beforeend', '<div class="col-6"><img lass="content-image" src="http://aimachine.brimob.id/upload-images/ai-uploads/output/'+data3.output_file+'" alt="" style="max-width: 250px;"></div>');
         this.resultIdentify = data3.result[0].match_found;
         console.log("ressss",this.resultIdentify);
+        console.log("ori ressss",data3);
       },
       error: error => {
           this.errorMessage = error.message;
@@ -286,7 +287,7 @@ export class FotoListComponent implements OnInit {
     $("#selectedFoto2").html("");
     $("#result").html("");
     $("#percent").html("");
-
+    this.resultIdentify = [];
     this.selectedHaystack = [];
     this.selectedPortrait = [];
   }
