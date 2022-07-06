@@ -17,9 +17,9 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-3 p-md-1" *ngFor="let hay of haystackList">
-                            <div class="content">
+                            <div class="content" style="cursor: pointer;">
                                 <div class="content-overlay"></div>
-                                <img class="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/haystack/{{hay.filename}}" alt="" style="max-width: 150px;">
+                                <img class="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/haystack/{{hay.filename}}" alt="" style="max-width: 150px; cursor: pointer;">
                                 <div class="content-details">
                                     <div class="fixed-top">
                                         <i class="fa fa-trash text-light" aria-hidden="true" (click)="deleteFoto(hay)"></i>
@@ -49,9 +49,9 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-3 p-2" *ngFor="let pot of potraitList">
-                            <div class="content">
+                            <div class="content" style="cursor: pointer;">
                                 <div class="content-overlay"></div>
-                                <img class="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/{{pot.portrait_filename}}" alt="" style="max-width: 150px;">
+                                <img class="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/{{pot.portrait_filename}}" alt="" style="max-width: 150px; cursor: pointer;">
                                 <div class="content-details">
                                     <div class="fixed-top">
                                         <i class="fa fa-trash text-light" aria-hidden="true" (click)="deleteFoto2(pot)"></i>
@@ -80,6 +80,10 @@
                     <div class="row" id="selectedFoto2">
                     </div>
                   </div>
+                  <div class="input-group mt-3">
+                    <span class="input-group-text text-light bg-dark"id="basic-addon1">Treshold</span>
+                    <input type="number" class="form-control text-light bgBox" id="treshold" value=90>
+                  </div>
                 </div>
                 <div class="card-footer text-muted bgBox">
                   <div class="row">
@@ -103,11 +107,13 @@
                 <div class="col-12 col-md-8">
                   <div class="row" id="result">
                   </div>
+                  <div class="row mt-2 mx-1" id="details">
+                  </div>
                 </div>
                 <div class="col-12 col-md-4">
                   <div class="row">
                     <div class="col-12" id="percent" *ngFor="let res of resultIdentify">
-                      <div class="card bg-dark mb-2">
+                      <div class="card bg-dark mb-2" style="cursor: pointer;" (click)="details(res)">
                         <img class="card-img-top" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/{{res.portrait}}" alt="Card image cap">
                           <p class="text-center text-light my-2" style="font-size: 12px;">Match (%) : {{res.match_percentage | number : '1.2-2'}}</p>
                       </div>
@@ -123,13 +129,13 @@
 
 <!-- modal haystack  -->
 <ng-template #modalData let-modal>
-  <div class="modal-header">
+  <div class="modal-header bgBox text-light">
     <h4 class="modal-title" id="modal-basic-title">Upload Foto</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">×</span>
     </button>
   </div>
-  <div class="modal-body">
+  <div class="modal-body bgBox text-light">
     <div *ngFor="let progressInfo of progressInfos" class="mb-2">
         <span>{{ progressInfo.fileName }}</span>
         <div class="progress">
@@ -174,13 +180,13 @@
 
 <!-- modal potrait  -->
 <ng-template #modalData2 let-modal>
-  <div class="modal-header">
+  <div class="modal-header bgBox text-light">
     <h4 class="modal-title" id="modal-basic-title">Upload Foto</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">×</span>
     </button>
   </div>
-  <div class="modal-body">
+  <div class="modal-body bgBox text-light">
     <div *ngFor="let progressInfo of progressInfos" class="mb-2">
         <span>{{ progressInfo.fileName }}</span>
         <div class="progress">

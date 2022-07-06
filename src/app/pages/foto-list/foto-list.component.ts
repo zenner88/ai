@@ -6,6 +6,7 @@ import { ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { FileUploadService } from 'src/app/file-upload.service';
 import Swal from 'sweetalert2';
 import * as $ from "jquery";
+import { TitleCasePipe } from '@angular/common';
 declare var window: any;
 @Component({
   selector: 'app-foto-list',
@@ -153,25 +154,34 @@ export class FotoListComponent implements OnInit {
     }
   }
 
-  upload2(idx: number, file: File): void {
-    this.progressInfos[idx] = { value: 0, fileName: file.name };
-    if (file) {
-      console.log(file)
-      this.uploadService.uploadPot(file).subscribe({
+  upload2(idx: number, file2: File): void {
+    this.progressInfos[idx] = { value: 0, fileName: file2.name };
+    if (file2) {
+      console.log(file2)
+      this.uploadService.uploadPot(file2).subscribe({
         next: (event: any) => {
           if (event.type === HttpEventType.UploadProgress) {
             this.progressInfos[idx].value = Math.round(100 * event.loaded / event.total);
           } else if (event instanceof HttpResponse) {
-            const msg = 'Uploaded the file successfully: ' + file.name;
+            const msg = 'Uploaded the file successfully: ' + file2.name;
             this.message.push(msg);
-              this.ngOnInit();
+            this.ngOnInit();
+          }
+          var fdf = event.body.result;
+          var fdf1 = event.body.valid;
+          console.log("catch b",fdf)
+          if (fdf1 === 2){
+            const msg = 'Could not upload the file: ' + file2.name +'  FACE DETECT FAILED  ';
+            this.message.push(msg);
           }
         },
         error: (err: any) => {
+          console.log(err)
           this.progressInfos[idx].value = 0;
-          const msg = 'Could not upload the file: ' + file.name;
+          const msg = 'Could not upload the file: ' + file2.name;
           this.message.push(msg);
-        }});
+        }
+      });
     }
   }
 
@@ -179,7 +189,7 @@ export class FotoListComponent implements OnInit {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
-      imageUrl: 'http://aimachine.brimob.id/upload-images/ai-uploads/haystack/'+index.filename,
+      imageUrl: 'https://aimachine.brimob.id/upload-images/ai-uploads/haystack/'+index.filename,
       imageHeight: 150,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -210,7 +220,7 @@ export class FotoListComponent implements OnInit {
   addFoto(index: any){
     console.log(index.filename, "ADD!!!");
     var d1 = this.elementRef.nativeElement.querySelector('#selectedFoto1');
-    d1.insertAdjacentHTML('beforeend', '<div class="col-12 col-md-6 p-md-1"><img lass="content-image" src="http://aimachine.brimob.id/upload-images/ai-uploads/haystack/'+index.filename+'" alt="" style="max-width: 100px;"></div>');
+    d1.insertAdjacentHTML('beforeend', '<div class="col-12 col-md-6 p-md-1"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/haystack/'+index.filename+'" alt="" style="max-width: 100px;"></div>');
 
     this.selectedHaystack.push(index.filename);
     console.log(this.selectedHaystack, "selected haystack");
@@ -220,7 +230,7 @@ export class FotoListComponent implements OnInit {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
-      imageUrl: 'http://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+index.portrait_filename,
+      imageUrl: 'https://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+index.portrait_filename,
       imageHeight: 150,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -251,16 +261,20 @@ export class FotoListComponent implements OnInit {
   addFoto2(index: any){
     console.log(index.portrait_filename, "ADD!!!");
     var d1 = this.elementRef.nativeElement.querySelector('#selectedFoto2');
-    d1.insertAdjacentHTML('beforeend', '<div class="col-12 col-md-4 p-md-1"><img lass="content-image" src="http://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+index.portrait_filename+'" alt="" style="max-width: 100px;"></div>');
+    d1.insertAdjacentHTML('beforeend', '<div class="col-12 col-md-4 p-1"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+index.portrait_filename+'" alt="" style="max-width: 90px;"></div>');
     this.selectedPortrait.push(index.portrait_filename);
     console.log(this.selectedPortrait, "selected portrait");
   }
 
   identify(){
     $("#result").html("");
+    $("#details").html("");
+
+    var tres = (<HTMLInputElement>document.getElementById("treshold")).value;
+    console.log(tres);
     // Call Potrait LIst Foto 
     let body = {
-      "threshold" : 97,
+      "threshold" : Number(tres),
       "portraits" : this.selectedPortrait,
       "haystacks" : this.selectedHaystack
     };
@@ -268,7 +282,7 @@ export class FotoListComponent implements OnInit {
       next: data3 => {
         console.log(data3);
         var d1 = this.elementRef.nativeElement.querySelector('#result');
-        d1.insertAdjacentHTML('beforeend', '<div class="col-6"><img lass="content-image" src="http://aimachine.brimob.id/upload-images/ai-uploads/output/'+data3.output_file+'" alt="" style="max-width: 250px;"></div>');
+        d1.insertAdjacentHTML('beforeend', '<div class="col-6"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/output/'+data3.output_file+'" alt="" style="max-width: 250px;"></div>');
         this.resultIdentify = data3.result[0].match_found;
         console.log("ressss",this.resultIdentify);
         console.log("ori ressss",data3);
@@ -282,11 +296,20 @@ export class FotoListComponent implements OnInit {
     })
   }
 
+  details(res: any){
+    $("#details").html("");
+
+    console.log(res);
+    var d1 = this.elementRef.nativeElement.querySelector('#details');
+    d1.insertAdjacentHTML('beforeend', '<div class="card bg-dark" style="width: 100%;"><img class="card-img-top" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+res.portrait+'"><div class="card-body bgBox"><p class="text-light">Nama :<BR>NIK :<BR>Alamat :</div></div>');
+  }
+
   clearSelection(){
     $("#selectedFoto1").html("");
     $("#selectedFoto2").html("");
     $("#result").html("");
     $("#percent").html("");
+    $("#details").html("");
     this.resultIdentify = [];
     this.selectedHaystack = [];
     this.selectedPortrait = [];
