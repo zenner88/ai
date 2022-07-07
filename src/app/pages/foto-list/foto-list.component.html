@@ -103,23 +103,11 @@
               Result
             </div>
             <div class="card-body">
-              <div class="row">
-                <div class="col-12 col-md-8">
-                  <div class="row" id="result">
-                  </div>
-                  <div class="row mt-2 mx-1" id="details">
-                  </div>
-                </div>
-                <div class="col-12 col-md-4">
-                  <div class="row">
-                    <div class="col-12" id="percent" *ngFor="let res of resultIdentify">
-                      <div class="card bg-dark mb-2" style="cursor: pointer;" (click)="details(res)">
-                        <img class="card-img-top" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/{{res.portrait}}" alt="Card image cap">
-                          <p class="text-center text-light my-2" style="font-size: 12px;">Match (%) : {{res.match_percentage | number : '1.2-2'}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="row" id="result">
+                
+
+                
+
               </div>
             </div>
         </div>
@@ -154,7 +142,7 @@
       <div class="row">
         <div class="col-8">
           <label class="btn btn-default p-0">
-            <input type="file" accept="image/*" multiple (change)="selectFiles($event)" />
+            <input type="file" accept="image/*" (change)="selectFiles($event)" />
           </label>
         </div>
         <div class="col-4">
@@ -205,7 +193,7 @@
       <div class="row">
         <div class="col-8">
           <label class="btn btn-default p-0">
-            <input type="file" accept="image/*" multiple (change)="selectFiles($event)" />
+            <input type="file" accept="image/*" (change)="selectFiles($event)" />
           </label>
         </div>
         <div class="col-4">

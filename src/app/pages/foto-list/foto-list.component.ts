@@ -1,8 +1,8 @@
 import { GlobalService } from '../../global.service';
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer2 } from '@angular/core';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploadService } from 'src/app/file-upload.service';
 import Swal from 'sweetalert2';
 import * as $ from "jquery";
@@ -31,7 +31,7 @@ export class FotoListComponent implements OnInit {
   imageInfos?: Observable<any>;
   resultIdentify: any =[];
 
-  constructor(private http: HttpClient, private global: GlobalService, private modalService: NgbModal, private uploadService: FileUploadService, private elementRef:ElementRef) { }
+  constructor(private http: HttpClient, private global: GlobalService, private modalService: NgbModal, private uploadService: FileUploadService, private elementRef:ElementRef, private renderer: Renderer2) { }
 
   ngOnInit(): void {
     this.callHaystack();
@@ -134,7 +134,9 @@ export class FotoListComponent implements OnInit {
           } else if (event instanceof HttpResponse) {
             const msg = 'Uploaded the file successfully: ' + file.name;
             this.message.push(msg);
+            this.modalService.dismissAll();
             this.ngOnInit();
+            this.topFunction();
           }
         },
         error: (err: any) => {
@@ -165,7 +167,9 @@ export class FotoListComponent implements OnInit {
           } else if (event instanceof HttpResponse) {
             const msg = 'Uploaded the file successfully: ' + file2.name;
             this.message.push(msg);
+            this.modalService.dismissAll();
             this.ngOnInit();
+            this.topFunction();
           }
           var fdf = event.body.result;
           var fdf1 = event.body.valid;
@@ -220,7 +224,7 @@ export class FotoListComponent implements OnInit {
   addFoto(index: any){
     console.log(index.filename, "ADD!!!");
     var d1 = this.elementRef.nativeElement.querySelector('#selectedFoto1');
-    d1.insertAdjacentHTML('beforeend', '<div class="col-12 col-md-6 p-md-1"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/haystack/'+index.filename+'" alt="" style="max-width: 100px;"></div>');
+    d1.insertAdjacentHTML('beforeend', '<div class="col-12 col-md-6 p-md-1 content"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/haystack/'+index.filename+'" alt="" style="max-width: 100px;"></div>');
 
     this.selectedHaystack.push(index.filename);
     console.log(this.selectedHaystack, "selected haystack");
@@ -280,12 +284,21 @@ export class FotoListComponent implements OnInit {
     };
     this.http.post<any>(this.global.address+this.global.find_match_portrait, body).subscribe({
       next: data3 => {
-        console.log(data3);
-        var d1 = this.elementRef.nativeElement.querySelector('#result');
-        d1.insertAdjacentHTML('beforeend', '<div class="col-6"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/output/'+data3.output_file+'" alt="" style="max-width: 250px;"></div>');
-        this.resultIdentify = data3.result[0].match_found;
-        console.log("ressss",this.resultIdentify);
-        console.log("ori ressss",data3);
+        console.log("identify",data3);
+        for (let i = 0; i < data3.result.length; i++) {
+          var identify = data3.result; 
+          console.log("root", identify);
+          console.log("match found", identify[i].match_found.length);
+          var d1 = this.elementRef.nativeElement.querySelector('#result');
+          d1.insertAdjacentHTML('beforeend', '<div class="col-12 col-md-8"><div class="row"><div class="col-6"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/output/'+identify[i].output_file+'" alt="" style="max-width: 250px;"></div><div class="row mt-2 mx-1" id="details'+[i]+'"></div></div></div><div class="col-12 col-md-4"><div class="row" id="percent'+[i]+'"></div></div>');
+          // let details = identify[i].match_found;
+          for (let j = 0; j < identify[i].match_found.length; j++) {
+            console.log("details", identify[i].match_found[j]);
+            var d1 = this.elementRef.nativeElement.querySelector('#percent'+[i]+'');
+            d1.insertAdjacentHTML('beforeend', '<div class="card bg-dark mb-2" style="cursor: pointer;" id="klik'+[j]+'"> <img class="card-img-top" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+identify[i].match_found[j].portrait+'" alt="Card image cap" placeholder="'+identify[i].match_found[j].original+'"> <p class="text-center text-light my-2" style="font-size: 12px;">Match (%) : '+identify[i].match_found[j].match_percentage+'</p> </div>');
+            var d2 = this.elementRef.nativeElement.querySelector('#klik'+[j]+'');
+            this.renderer.listen(d2, 'click', this.details);          }
+          }
       },
       error: error => {
           this.errorMessage = error.message;
@@ -296,12 +309,12 @@ export class FotoListComponent implements OnInit {
     })
   }
 
-  details(res: any){
-    $("#details").html("");
+  details(event:any){
+    $("#details1").html("");
 
-    console.log(res);
-    var d1 = this.elementRef.nativeElement.querySelector('#details');
-    d1.insertAdjacentHTML('beforeend', '<div class="card bg-dark" style="width: 100%;"><img class="card-img-top" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+res.portrait+'"><div class="card-body bgBox"><p class="text-light">Nama :<BR>NIK :<BR>Alamat :</div></div>');
+    console.log(event.target.attributes.placeholder.value);
+    var d1 = this.elementRef.nativeElement.querySelector('#details1');
+    d1.insertAdjacentHTML('beforeend', '<div class="card bg-dark" style="width: 100%;"><img class="card-img-top" src="https://aimachine.brimob.id/upload-images/ai-uploads/originalportrait/'+event.target.attributes.placeholder.value+'"><div class="card-body bgBox"><p class="text-light">Nama :<BR>NIK :<BR>Alamat :</div></div>');
   }
 
   clearSelection(){
@@ -315,4 +328,8 @@ export class FotoListComponent implements OnInit {
     this.selectedPortrait = [];
   }
   
+  topFunction() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  }
 }
