@@ -12,6 +12,8 @@ import { MainComponent } from './pages/main/main.component';
 import { FotoListComponent } from './pages/foto-list/foto-list.component';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import 'bootstrap/dist/js/bootstrap.bundle';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 registerLocaleData(localeId, 'id'); 
 
 @NgModule({
@@ -27,6 +29,8 @@ registerLocaleData(localeId, 'id');
     NgbModule,
     FormsModule,
     NgHttpLoaderModule.forRoot(),
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot(),
   ],
   providers: [{ provide: LOCALE_ID, useValue: "id-ID" }, UpperCasePipe, GlobalService],
   bootstrap: [AppComponent]

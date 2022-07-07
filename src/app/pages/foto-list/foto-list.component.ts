@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploadService } from 'src/app/file-upload.service';
 import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 import * as $ from "jquery";
 import { TitleCasePipe } from '@angular/common';
 declare var window: any;
@@ -31,7 +32,7 @@ export class FotoListComponent implements OnInit {
   imageInfos?: Observable<any>;
   resultIdentify: any =[];
 
-  constructor(private http: HttpClient, private global: GlobalService, private modalService: NgbModal, private uploadService: FileUploadService, private elementRef:ElementRef, private renderer: Renderer2) { }
+  constructor(private http: HttpClient, private global: GlobalService, private modalService: NgbModal, private uploadService: FileUploadService, private elementRef:ElementRef, private renderer: Renderer2, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.callHaystack();
@@ -225,8 +226,8 @@ export class FotoListComponent implements OnInit {
     console.log(index.filename, "ADD!!!");
     var d1 = this.elementRef.nativeElement.querySelector('#selectedFoto1');
     d1.insertAdjacentHTML('beforeend', '<div class="col-12 col-md-6 p-md-1 content"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/haystack/'+index.filename+'" alt="" style="max-width: 100px;"></div>');
-
     this.selectedHaystack.push(index.filename);
+    this.toastr.info('Foto Kejadian '+index.filename, 'Ditambahkan!', {positionClass: 'toast-bottom-right', timeOut: 2000});
     console.log(this.selectedHaystack, "selected haystack");
   }
 
@@ -267,6 +268,7 @@ export class FotoListComponent implements OnInit {
     var d1 = this.elementRef.nativeElement.querySelector('#selectedFoto2');
     d1.insertAdjacentHTML('beforeend', '<div class="col-12 col-md-4 p-1"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+index.portrait_filename+'" alt="" style="max-width: 90px;"></div>');
     this.selectedPortrait.push(index.portrait_filename);
+    this.toastr.info('Foto E-KTP '+index.filename, 'Ditambahkan!', {positionClass: 'toast-bottom-right', timeOut: 2000});
     console.log(this.selectedPortrait, "selected portrait");
   }
 
