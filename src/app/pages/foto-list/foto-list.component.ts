@@ -1,11 +1,14 @@
 import { GlobalService } from '../../global.service';
-import { Component, OnInit, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import { DecimalPipe  } from '@angular/common';
 import { Observable } from 'rxjs';
 import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploadService } from 'src/app/file-upload.service';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import * as $ from "jquery";
 import { TitleCasePipe } from '@angular/common';
 declare var window: any;
@@ -15,6 +18,7 @@ declare var window: any;
   styleUrls: ['./foto-list.component.scss']
 })
 export class FotoListComponent implements OnInit {
+  @ViewChild('htmlData') htmlData!: ElementRef;
   haystackLength: any;
   haystackList: any = [];
   errorMessage: any;
@@ -31,15 +35,20 @@ export class FotoListComponent implements OnInit {
   previews: string[] = [];
   imageInfos?: Observable<any>;
   resultIdentify: any =[];
+  identifyRes: any;
+  color: string | undefined;
+  checkbox_checked: boolean = false;
+  checkbox_checked2: boolean = false;
+  state: any;
 
-  constructor(private http: HttpClient, private global: GlobalService, private modalService: NgbModal, private uploadService: FileUploadService, private elementRef:ElementRef, private renderer: Renderer2, private toastr: ToastrService) { }
+  constructor(private http: HttpClient, private global: GlobalService, private modalService: NgbModal, private uploadService: FileUploadService, private elementRef:ElementRef, private renderer: Renderer2, private toastr: ToastrService, private _decimalPipe: DecimalPipe) { }
 
   ngOnInit(): void {
     this.callHaystack();
-    setTimeout(() => {
+    this.callPotrait();    
+    // setTimeout(() => {
       // this.onTimeOut();
-      this.callPotrait();    
-  }, 1000);
+  // }, 1000);
 
   this.progressInfos = []
   this.message = [];
@@ -225,8 +234,8 @@ export class FotoListComponent implements OnInit {
   addFoto(index: any){
     console.log(index.filename, "ADD!!!");
     var d1 = this.elementRef.nativeElement.querySelector('#selectedFoto1');
-    d1.insertAdjacentHTML('beforeend', '<div class="col-12 col-md-6 p-md-1 content"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/haystack/'+index.filename+'" alt="" style="max-width: 100px;"></div>');
-    this.selectedHaystack.push(index.filename);
+    d1.insertAdjacentHTML('beforeend', '<div class="col-6 col-md-3 p-md-1 content"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/haystack/'+index.filename+'" alt="" style="max-width: 150px;"></div>');
+    this.selectedHaystack.push({"img" : index.filename});
     this.toastr.info('Foto Kejadian '+index.filename, 'Ditambahkan!', {positionClass: 'toast-bottom-right', timeOut: 2000});
     console.log(this.selectedHaystack, "selected haystack");
   }
@@ -264,10 +273,13 @@ export class FotoListComponent implements OnInit {
   }
 
   addFoto2(index: any){
+    this.getRandomColor()
     console.log(index.portrait_filename, "ADD!!!");
     var d1 = this.elementRef.nativeElement.querySelector('#selectedFoto2');
-    d1.insertAdjacentHTML('beforeend', '<div class="col-12 col-md-4 p-1"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+index.portrait_filename+'" alt="" style="max-width: 90px;"></div>');
-    this.selectedPortrait.push(index.portrait_filename);
+    d1.insertAdjacentHTML('beforeend', '<div class="col-6 col-md-2 p-1"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+index.portrait_filename+'" alt="" style="max-width: 90px;"></div>');
+    // d1.insertAdjacentHTML('beforeend', '<div class="col-6 col-md-2 p-1"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+index.portrait_filename+'" alt="" style="max-width: 90px;"><div class="form-group"><input type="color" id="potColor" name="potColor" value="'+this.color+'"></div></div>');
+    this.selectedPortrait.push({"img" : index.portrait_filename,  "color" : this.color});
+    // this.selectedPortrait.push([index.portrait_filename, this.color]);
     this.toastr.info('Foto E-KTP '+index.filename, 'Ditambahkan!', {positionClass: 'toast-bottom-right', timeOut: 2000});
     console.log(this.selectedPortrait, "selected portrait");
   }
@@ -277,30 +289,48 @@ export class FotoListComponent implements OnInit {
     $("#details").html("");
 
     var tres = (<HTMLInputElement>document.getElementById("treshold")).value;
-    console.log(tres);
+    var ar = this.checkbox_checked;
+    var dra = this.checkbox_checked2;
+    var irw = (<HTMLInputElement>document.getElementById("irw")).value;
+    var fdt = (<HTMLInputElement>document.getElementById("fdt")).value;
+    
+    
+    
     // Call Potrait LIst Foto 
-    let body = {
-      "threshold" : Number(tres),
-      "portraits" : this.selectedPortrait,
-      "haystacks" : this.selectedHaystack
-    };
+    let body = 
+      {
+        "confidence_threshold" : Number(tres),
+        "arbitrary_rotation" : ar,
+        "determine_rotation_angle" : dra,
+        "internal_resize_width" : Number(irw),
+        "face_detection_threshold" : Number(fdt),
+        "haystacks" : this.selectedHaystack,
+        "portraits" : this.selectedPortrait
+      };
     this.http.post<any>(this.global.address+this.global.find_match_portrait, body).subscribe({
       next: data3 => {
         console.log("identify",data3);
         for (let i = 0; i < data3.result.length; i++) {
           var identify = data3.result; 
-          console.log("root", identify);
+          this.identifyRes = identify;
+          console.log("root", this.identifyRes);
           console.log("match found", identify[i].match_found.length);
+
+          // result foto kejadian
           var d1 = this.elementRef.nativeElement.querySelector('#result');
-          d1.insertAdjacentHTML('beforeend', '<div class="col-12 col-md-8"><div class="row"><div class="col-6"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/output/'+identify[i].output_file+'" alt="" style="max-width: 250px;"></div><div class="row mt-2 mx-1" id="details'+[i]+'"></div></div></div><div class="col-12 col-md-4"><div class="row" id="percent'+[i]+'"></div></div>');
-          // let details = identify[i].match_found;
+          d1.insertAdjacentHTML('beforeend', '<div class="col-5 px-1 mb-2"> <img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/output/'+identify[i].output_file+'" alt="" style="width: 100%;"></div><div class="col-7 px-1 mb-2"> <div class="row" id="percent'+[i]+'"> </div></div><hr>');
+
           for (let j = 0; j < identify[i].match_found.length; j++) {
             console.log("details", identify[i].match_found[j]);
+            // potrait persentase
             var d1 = this.elementRef.nativeElement.querySelector('#percent'+[i]+'');
-            d1.insertAdjacentHTML('beforeend', '<div class="card bg-dark mb-2" style="cursor: pointer;" id="klik'+[j]+'"> <img class="card-img-top" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+identify[i].match_found[j].portrait+'" alt="Card image cap" placeholder="'+identify[i].match_found[j].original+'"> <p class="text-center text-light my-2" style="font-size: 12px;">Match (%) : '+identify[i].match_found[j].match_percentage+'</p> </div>');
-            var d2 = this.elementRef.nativeElement.querySelector('#klik'+[j]+'');
-            this.renderer.listen(d2, 'click', this.details);          }
+            d1.insertAdjacentHTML('beforeend', ' <div class="col-4"> <div class="card mb-2" style="cursor: pointer; background-color:'+identify[i].match_found[j].color+'" id="klik'+[j]+'"> <img class="card-img-top" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+identify[i].match_found[j].portrait+'" alt="Card image cap" placeholder="'+identify[i].match_found[j].original+'"> <p class="text-center text-light my-2" style="font-size: 12px;">Presentase(%) : '+this._decimalPipe.transform(identify[i].match_found[j].match_percentage,"1.2-2")+'</p> </div> </div> <div class="col-8"> <img class="" src="https://aimachine.brimob.id/upload-images/ai-uploads/originalportrait/'+identify[i].match_found[j].original+'" alt="Card image cap" placeholder="'+identify[i].match_found[j].original+'" style="max-height: 150px; border-color:'+identify[i].match_found[j].color+'"> </div>');
+            // ektp
+            // var d2 = this.elementRef.nativeElement.querySelector('#klik'+[j]+'');
+            // this.renderer.listen(d2, 'click', this.details);        
+            // style="border-color:'+identify[i].match_found[j].color+'"
           }
+        }
       },
       error: error => {
           this.errorMessage = error.message;
@@ -313,7 +343,6 @@ export class FotoListComponent implements OnInit {
 
   details(event:any){
     $("#details1").html("");
-
     console.log(event.target.attributes.placeholder.value);
     var d1 = this.elementRef.nativeElement.querySelector('#details1');
     d1.insertAdjacentHTML('beforeend', '<div class="card bg-dark" style="width: 100%;"><img class="card-img-top" src="https://aimachine.brimob.id/upload-images/ai-uploads/originalportrait/'+event.target.attributes.placeholder.value+'"><div class="card-body bgBox"><p class="text-light">Nama :<BR>NIK :<BR>Alamat :</div></div>');
@@ -334,4 +363,27 @@ export class FotoListComponent implements OnInit {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   }
+
+  public openPDF(): void {
+    let DATA: any = document.getElementById('htmlData');
+    html2canvas(DATA, {useCORS: true}).then((canvas) => {
+      let fileWidth = 208;
+      let fileHeight = (canvas.height * fileWidth) / canvas.width;
+      const FILEURI = canvas.toDataURL('image/png');
+      let PDF = new jsPDF('p', 'mm', 'a4');
+      let position = 0;
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+      let date = new Date();
+      console.log(date);
+      PDF.save('export-'+date+'.pdf');
+    });
+  }
+
+  getRandomColor() {
+    let letters = '0123456789ABCDEF';
+    this.color = '#'; // <-----------
+    for (var i = 0; i < 6; i++) {
+        this.color += letters[Math.floor(Math.random() * 16)];
+    }
+}
 }

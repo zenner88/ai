@@ -14,6 +14,7 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import {DecimalPipe} from '@angular/common';
 registerLocaleData(localeId, 'id'); 
 
 @NgModule({
@@ -32,7 +33,7 @@ registerLocaleData(localeId, 'id');
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(),
   ],
-  providers: [{ provide: LOCALE_ID, useValue: "id-ID" }, UpperCasePipe, GlobalService],
+  providers: [{ provide: LOCALE_ID, useValue: "id-ID" }, UpperCasePipe, GlobalService, DecimalPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

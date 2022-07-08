@@ -66,51 +66,110 @@
                 </div>
             </div>
         </div>
-        <div class="col-3 py-2 px-md-1">
+        <div class="col-7 py-2 px-md-1">
             <div class="card text-center bgBox">
                 <div class="card-header text-light bgBox">
                   Selected Foto
                 </div>
                 <div class="card-body">
                   <div class="card bgBox">
-                    <div class="row" id="selectedFoto1">
+                    <div class="row pull-left" id="selectedFoto1">
                     </div>
                   </div>
                   <div class="card bgBox mt-2">
-                    <div class="row" id="selectedFoto2">
+                    <div class="row pull-left" id="selectedFoto2">
                     </div>
-                  </div>
-                  <div class="input-group mt-3">
-                    <span class="input-group-text text-light bg-dark"id="basic-addon1">Treshold</span>
-                    <input type="number" class="form-control text-light bgBox" id="treshold" value=90>
                   </div>
                 </div>
                 <div class="card-footer text-muted bgBox">
-                  <div class="row">
-                    <div class="col-12 col-md-6 btn btn-2" (click)="clearSelection()">
-                      <span>Clear</span>
+                  <div class="row">                    
+                    <div class="col-8">
+                      <div class="row">
+                        <div class="col-5">
+                          <div class="two" style="text-align: left;">
+                            <a class="" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1" style="text-align: left;">Advanced Settings</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="collapse" id="multiCollapseExample1">
+                            <div class="card border-light p-2 mt-2 bgBox">
+                              <div class="row">
+                                <div class="col-6">
+                                  <p class="text-light" style="text-align: left;">Presentase</p>
+                                </div>
+                                <div class="col-6">
+                                  <input type="number" class="form-control text-light bg-dark" id="treshold" value=90>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-6">
+                                  <p class="text-light" style="text-align: left;">Arbitrary Rotation</p>
+                                </div>
+                                <div class="col-6">
+                                  <div class="form-check form-switch">
+                                    <input class="form-check-input form-control" type="checkbox" id="ar" role="switch" id="flexSwitchCheckDefault" checked="checkbox_checked" [(ngModel)]="checkbox_checked" (change)="checkbox_checked ? state = true : state = false">
+                                  </div>                                
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-6">
+                                  <p class="text-light" style="text-align: left;">Determine Rotation Angle</p>
+                                </div>
+                                <div class="col-6">
+                                  <div class="form-check form-switch">
+                                    <input class="form-check-input form-control" type="checkbox" id="dra" role="switch" id="flexSwitchCheckDefault" checked="checkbox_checked2" [(ngModel)]="checkbox_checked2" (change)="checkbox_checked2 ? state = true : state = false">
+                                  </div> 
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-6">
+                                  <p class="text-light" style="text-align: left;">Internal Resize Width</p>
+                                </div>
+                                <div class="col-6">
+                                  <input type="number" class="form-control text-light bg-dark" id="irw" value=2000>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-6">
+                                  <p class="text-light" style="text-align: left;">Face Detection Threshold</p>
+                                </div>
+                                <div class="col-6">
+                                  <input type="number" class="form-control text-light bg-dark" id="fdt" value=5>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
-                    <div class="col-12 col-md-6 btn btn-three" (click)="identify()">
-                      <span>Identify</span>
+                    <div class="col-4">
+                      <div class="btn btn-2" (click)="clearSelection()">
+                      <span>Clear</span>
+                      </div>
+                      <div class="btn btn-three" (click)="identify()">
+                        <span>Identify</span>
+                      </div>
                     </div>
                   </div>
                 </div>
             </div>
-        </div>
-        <div class="col-4 py-2 px-md-1">
-          <div class="card text-center bgBox">
-            <div class="card-header bgBox text-light">
-              Result
-            </div>
-            <div class="card-body">
-              <div class="row" id="result">
-                
-
-                
-
+            <!-- result   -->
+            <div class="card text-center bgBox mt-2" id="htmlData">
+              <div class="card-header bgBox text-light">
+                Result
               </div>
-            </div>
-        </div>
+              <div class="card-body">
+                <div class="row" id="result">
+                </div>
+              </div>
+              <div class="card-footer text-muted" *ngIf="identifyRes">
+                <div class="btn btn-three" (click)="openPDF()">
+                <span>Export PDF</span>
+              </div>
+          </div>
         </div>
     </div>
 </div>
