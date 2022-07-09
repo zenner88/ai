@@ -11,6 +11,8 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as $ from "jquery";
 import { TitleCasePipe } from '@angular/common';
+import { DisableRightClickService } from '../../disable-right-click.service';
+
 declare var window: any;
 @Component({
   selector: 'app-foto-list',
@@ -37,25 +39,20 @@ export class FotoListComponent implements OnInit {
   resultIdentify: any =[];
   identifyRes: any;
   color: string | undefined;
-  checkbox_checked: boolean = false;
+  checkbox_checked: boolean = true;
   checkbox_checked2: boolean = false;
   state: any;
 
-  constructor(private http: HttpClient, private global: GlobalService, private modalService: NgbModal, private uploadService: FileUploadService, private elementRef:ElementRef, private renderer: Renderer2, private toastr: ToastrService, private _decimalPipe: DecimalPipe) { }
+  constructor(private http: HttpClient, private global: GlobalService, private modalService: NgbModal, private uploadService: FileUploadService, private elementRef:ElementRef, private renderer: Renderer2, private toastr: ToastrService, private _decimalPipe: DecimalPipe, private rightClickDisable: DisableRightClickService) { }
 
   ngOnInit(): void {
     this.callHaystack();
     this.callPotrait();    
-    // setTimeout(() => {
-      // this.onTimeOut();
-  // }, 1000);
-
-  this.progressInfos = []
-  this.message = [];
-  this.previews = [];
-  this.imageInfos= undefined;
-
-    
+    this.rightClickDisable.disableRightClick();
+    this.progressInfos = []
+    this.message = [];
+    this.previews = [];
+    this.imageInfos= undefined;
   }
 
   callHaystack(){

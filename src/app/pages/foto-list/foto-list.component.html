@@ -21,14 +21,24 @@
                                 <div class="content-overlay"></div>
                                 <img class="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/haystack/{{hay.filename}}" alt="" style="max-width: 150px; cursor: pointer;">
                                 <div class="content-details">
-                                    <div class="fixed-top">
-                                        <i class="fa fa-trash text-light" aria-hidden="true" (click)="deleteFoto(hay)"></i>
+                                  <div class="row">
+                                    <div class="col-4">
+                                      <i class="fa fa-plus  text-light" aria-hidden="true" (click)="addFoto(hay)"></i>
                                     </div>
-                                    <div class="fixed-bottom">
-                                        <i class="fa fa-plus  text-light" aria-hidden="true" (click)="addFoto(hay)"></i>
+                                    <div class="col-4">
+                                      <i class="fa fa-eye text-light" aria-hidden="true" (click)="triggerModal(modalImages)"></i>
                                     </div>
+                                    <div class="col-4">
+                                      <i class="fa fa-trash text-light" aria-hidden="true" (click)="deleteFoto(hay)"></i>
+                                    </div>
+                                  </div>
                                 </div>
                             </div>
+                            <ng-template #modalImages let-modal>
+                              <div class="modal-body bgBox px-1 py-1">
+                                <img class="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/haystack/{{hay.filename}}" alt="" style="cursor: pointer;">
+                              </div>
+                            </ng-template>
                         </div>
                     </div>
                 </div>
@@ -53,14 +63,24 @@
                                 <div class="content-overlay"></div>
                                 <img class="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/{{pot.portrait_filename}}" alt="" style="max-width: 150px; cursor: pointer;">
                                 <div class="content-details">
-                                    <div class="fixed-top">
-                                        <i class="fa fa-trash text-light" aria-hidden="true" (click)="deleteFoto2(pot)"></i>
+                                  <div class="row">
+                                    <div class="col-4">
+                                      <i class="fa fa-plus  text-light" aria-hidden="true" (click)="addFoto2(pot)"></i>
                                     </div>
-                                    <div class="fixed-bottom">
-                                        <i class="fa fa-plus  text-light" aria-hidden="true" (click)="addFoto2(pot)"></i>
+                                    <div class="col-4">
+                                      <i class="fa fa-eye text-light" aria-hidden="true" (click)="triggerModal(modalPortrait)"></i>
                                     </div>
+                                    <div class="col-4">
+                                      <i class="fa fa-trash text-light" aria-hidden="true" (click)="deleteFoto2(pot)"></i>
+                                    </div>
+                                  </div>
                                 </div>
                             </div>
+                            <ng-template #modalPortrait let-modal>
+                              <div class="modal-body bgBox px-1 py-1">
+                                <img class="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/{{pot.portrait_filename}}" alt="" style="cursor: pointer;">
+                              </div>
+                            </ng-template>
                         </div>
                     </div>
                 </div>
@@ -100,7 +120,7 @@
                                   <p class="text-light" style="text-align: left;">Presentase</p>
                                 </div>
                                 <div class="col-6">
-                                  <input type="number" class="form-control text-light bg-dark" id="treshold" value=90>
+                                  <input type="number" class="form-control text-light bg-dark" id="treshold" value=97>
                                 </div>
                               </div>
                               <div class="row">
