@@ -291,8 +291,6 @@ export class FotoListComponent implements OnInit {
     var irw = (<HTMLInputElement>document.getElementById("irw")).value;
     var fdt = (<HTMLInputElement>document.getElementById("fdt")).value;
     
-    
-    
     // Call Potrait LIst Foto 
     let body = 
       {
@@ -312,20 +310,25 @@ export class FotoListComponent implements OnInit {
           this.identifyRes = identify;
           console.log("root", this.identifyRes);
           console.log("match found", identify[i].match_found.length);
-
-          // result foto kejadian
-          var d1 = this.elementRef.nativeElement.querySelector('#result');
-          d1.insertAdjacentHTML('beforeend', '<div class="col-5 px-1 mb-2"> <img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/output/'+identify[i].output_file+'" alt="" style="width: 100%;"></div><div class="col-7 px-1 mb-2"> <div class="row" id="percent'+[i]+'"> </div></div><hr>');
-
-          for (let j = 0; j < identify[i].match_found.length; j++) {
-            console.log("details", identify[i].match_found[j]);
-            // potrait persentase
-            var d1 = this.elementRef.nativeElement.querySelector('#percent'+[i]+'');
-            d1.insertAdjacentHTML('beforeend', ' <div class="col-4"> <div class="card mb-2" style="cursor: pointer; background-color:'+identify[i].match_found[j].color+'" id="klik'+[j]+'"> <img class="card-img-top" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+identify[i].match_found[j].portrait+'" alt="Card image cap" placeholder="'+identify[i].match_found[j].original+'"> <p class="text-center text-light my-2" style="font-size: 12px;">Presentase(%) : '+this._decimalPipe.transform(identify[i].match_found[j].match_percentage,"1.2-2")+'</p> </div> </div> <div class="col-8"> <img class="" src="https://aimachine.brimob.id/upload-images/ai-uploads/originalportrait/'+identify[i].match_found[j].original+'" alt="Card image cap" placeholder="'+identify[i].match_found[j].original+'" style="max-height: 150px; border-color:'+identify[i].match_found[j].color+'"> </div>');
-            // ektp
-            // var d2 = this.elementRef.nativeElement.querySelector('#klik'+[j]+'');
-            // this.renderer.listen(d2, 'click', this.details);        
-            // style="border-color:'+identify[i].match_found[j].color+'"
+          if (identify[i].match_found.length === 0){
+            var d1 = this.elementRef.nativeElement.querySelector('#result');
+            d1.insertAdjacentHTML('beforeend', '<div class="text-center text-danger"></div>');
+          }
+          else{
+            // result foto kejadian
+            var d1 = this.elementRef.nativeElement.querySelector('#result');
+            d1.insertAdjacentHTML('beforeend', '<div class="col-5 px-1 mb-2"> <img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/output/'+identify[i].output_file+'?r=' + Math.floor(Math.random()*100000)+'" alt="" style="width: 100%;"></div><div class="col-7 px-1 mb-2"> <div class="row" id="percent'+[i]+'"> </div></div><hr>');
+  
+            for (let j = 0; j < identify[i].match_found.length; j++) {
+              console.log("details", identify[i].match_found[j]);
+              // potrait persentase
+              var d1 = this.elementRef.nativeElement.querySelector('#percent'+[i]+'');
+              d1.insertAdjacentHTML('beforeend', ' <div class="col-4"> <div class="card mb-2" style="cursor: pointer; background-color:'+identify[i].match_found[j].color+'" id="klik'+[j]+'"> <img class="card-img-top" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+identify[i].match_found[j].portrait+'" alt="Card image cap" placeholder="'+identify[i].match_found[j].original+'"> <p class="text-center text-light my-2" style="font-size: 12px;">Presentase(%) : '+this._decimalPipe.transform(identify[i].match_found[j].match_percentage,"1.2-2")+'</p> </div> </div> <div class="col-8"> <img class="" src="https://aimachine.brimob.id/upload-images/ai-uploads/originalportrait/'+identify[i].match_found[j].original+'" alt="Card image cap" placeholder="'+identify[i].match_found[j].original+'" style="max-height: 150px; border-color:'+identify[i].match_found[j].color+'"> </div>');
+              // ektp
+              // var d2 = this.elementRef.nativeElement.querySelector('#klik'+[j]+'');
+              // this.renderer.listen(d2, 'click', this.details);        
+              // style="border-color:'+identify[i].match_found[j].color+'"
+            }
           }
         }
       },
