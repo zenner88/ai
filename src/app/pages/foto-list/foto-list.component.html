@@ -204,12 +204,13 @@
                 <div class="row" id="result">
                 </div>
               </div>
+              <!-- <div class="card-footer text-muted"> -->
               <div class="card-footer text-muted" *ngIf="identifyRes">
-                <div class="btn btn-three" (click)="openPDF()">
+                <div class="btn btn-three" (click)="open()">
                 <span>Export PDF</span>
               </div>
-          </div>
-        </div>
+              </div>
+            </div>
     </div>
 </div>
 
@@ -314,3 +315,32 @@
       </div>
   </div>
 </ng-template>
+
+<!-- PDF -->
+<div class="modal-body my-2" style="width:100%;overflow-x:scroll;font-family: 'Arial Narrow', Arial, sans-serif; display: none;" id="pdfTable">
+  <table class="table table-sm table-borderless" id="data">
+    <tr>
+      <td width="20%">
+        <p class="text-center border-dark" style="line-height:150%;">
+          <B>KORPS BRIMOB POLRI<br style="height:5pt;">
+          BAGIAN OPERASI</B>
+        </p>
+      </td>
+      <td width="80%">
+        <p class="text-center font-weight-bold"><B><U>LAPORAN TEMU KENALI WAJAH </U></B>
+          <BR>Tanggal : {{date | date: 'd MMMM y'}}</p>
+      </td>
+    </tr>
+  </table>  
+  <HR>
+  <table class="table table-sm table-borderless" id="data">
+    <tr>
+      <td>
+        <div class="card-body">
+          <div class="row" id="result2"></div>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+<!-- END PDF -->

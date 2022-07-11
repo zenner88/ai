@@ -43,6 +43,7 @@ export class FotoListComponent implements OnInit {
   checkbox_checked2: boolean = false;
   state: any;
   irw:number = 2000;
+  date = new Date();
 
   constructor(private http: HttpClient, private global: GlobalService, private modalService: NgbModal, private uploadService: FileUploadService, private elementRef:ElementRef, private renderer: Renderer2, private toastr: ToastrService, private _decimalPipe: DecimalPipe, private rightClickDisable: DisableRightClickService) { }
 
@@ -232,7 +233,7 @@ export class FotoListComponent implements OnInit {
   addFoto(index: any){
     console.log(index.filename, "ADD!!!");
     var d1 = this.elementRef.nativeElement.querySelector('#selectedFoto1');
-    d1.insertAdjacentHTML('beforeend', '<div class="col-6 col-md-3 p-md-1 content"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/haystack/'+index.filename+'" alt="" style="max-width: 150px;"></div>');
+    d1.insertAdjacentHTML('beforeend', '<div class="col-6 col-md-3 p-md-1 content"><img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/haystack/'+index.filename+'" alt="" style="max-width: 150px; align-self: end"></div>');
     this.selectedHaystack.push({"img" : index.filename});
     this.toastr.info('Foto Kejadian '+index.filename, 'Ditambahkan!', {positionClass: 'toast-bottom-right', timeOut: 2000});
     console.log(this.selectedHaystack, "selected haystack");
@@ -284,6 +285,7 @@ export class FotoListComponent implements OnInit {
 
   identify(){
     $("#result").html("");
+    $("#result2").html("");
     $("#details").html("");
 
     var tres = (<HTMLInputElement>document.getElementById("treshold")).value;
@@ -314,17 +316,25 @@ export class FotoListComponent implements OnInit {
           if (identify[i].match_found.length === 0){
             var d1 = this.elementRef.nativeElement.querySelector('#result');
             d1.insertAdjacentHTML('beforeend', '<div class="text-center text-danger"></div>');
+            var d2 = this.elementRef.nativeElement.querySelector('#result2');
+            d2.insertAdjacentHTML('beforeend', '<div class="text-center text-danger"></div>');
           }
           else{
             // result foto kejadian
             var d1 = this.elementRef.nativeElement.querySelector('#result');
             d1.insertAdjacentHTML('beforeend', '<div class="col-5 px-1 mb-2"> <img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/output/'+identify[i].output_file+'?r=' + Math.floor(Math.random()*100000)+'" alt="" style="width: 100%;"></div><div class="col-7 px-1 mb-2"> <div class="row" id="percent'+[i]+'"> </div></div><hr>');
+
+            var d2 = this.elementRef.nativeElement.querySelector('#result2');
+            d2.insertAdjacentHTML('beforeend', '<div class="col-5 px-1 mb-2"><h5>Foto Kejadian</h5> <img lass="content-image" src="https://aimachine.brimob.id/upload-images/ai-uploads/output/'+identify[i].output_file+'?r=' + Math.floor(Math.random()*100000)+'" alt="" style="width: 100%;"></div><div class="col-7 px-1 mb-2"> <div class="row" id="percent2'+[i]+'"><h5>Hasil Identifikasi </h5></div></div><hr>');
   
             for (let j = 0; j < identify[i].match_found.length; j++) {
               console.log("details", identify[i].match_found[j]);
               // potrait persentase
               var d1 = this.elementRef.nativeElement.querySelector('#percent'+[i]+'');
               d1.insertAdjacentHTML('beforeend', ' <div class="col-4"> <div class="card mb-2" style="cursor: pointer; background-color:'+identify[i].match_found[j].color+'" id="klik'+[j]+'"> <img class="card-img-top" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+identify[i].match_found[j].portrait+'" alt="Card image cap" placeholder="'+identify[i].match_found[j].original+'"> <p class="text-center text-light my-2" style="font-size: 12px;">Presentase(%) : '+this._decimalPipe.transform(identify[i].match_found[j].match_percentage,"1.2-2")+'</p> </div> </div> <div class="col-8"> <img class="" src="https://aimachine.brimob.id/upload-images/ai-uploads/originalportrait/'+identify[i].match_found[j].original+'" alt="Card image cap" placeholder="'+identify[i].match_found[j].original+'" style="max-height: 150px; border-color:'+identify[i].match_found[j].color+'"> </div>');
+
+              var d2 = this.elementRef.nativeElement.querySelector('#percent2'+[i]+'');
+              d2.insertAdjacentHTML('beforeend', ' <div class="col-4"><div class="card mb-2" style="cursor: pointer; background-color:'+identify[i].match_found[j].color+'" id="klik'+[j]+'"> <img class="card-img-top" src="https://aimachine.brimob.id/upload-images/ai-uploads/portrait/'+identify[i].match_found[j].portrait+'" alt="Card image cap" placeholder="'+identify[i].match_found[j].original+'"> <p class="text-center text-light my-2" style="font-size: 12px;">Presentase(%) : '+this._decimalPipe.transform(identify[i].match_found[j].match_percentage,"1.2-2")+'</p> </div> </div> <div class="col-8"> <img class="" src="https://aimachine.brimob.id/upload-images/ai-uploads/originalportrait/'+identify[i].match_found[j].original+'" alt="Card image cap" placeholder="'+identify[i].match_found[j].original+'" style="max-height: 150px; border-color:'+identify[i].match_found[j].color+'"> </div>');
               // ektp
               // var d2 = this.elementRef.nativeElement.querySelector('#klik'+[j]+'');
               // this.renderer.listen(d2, 'click', this.details);        
@@ -355,6 +365,9 @@ export class FotoListComponent implements OnInit {
     $("#result").html("");
     $("#percent").html("");
     $("#details").html("");
+    $("#result2").html("");
+    $("#percent2").html("");
+    $("#details2").html("");
     this.resultIdentify = [];
     this.selectedHaystack = [];
     this.selectedPortrait = [];
@@ -365,19 +378,55 @@ export class FotoListComponent implements OnInit {
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   }
 
+  open(){
+    document.getElementById('pdfTable')?.setAttribute('style', ' display: block;')
+    this.openPDF();
+  }
+
   public openPDF(): void {
-    let DATA: any = document.getElementById('htmlData');
+    var HTML_Width: any = document.getElementById('pdfTable')?.clientWidth;
+		var HTML_Height: any = document.getElementById('pdfTable')?.clientHeight;
+    // var HTML_Width: any = 208;
+		// var HTML_Height: any = 450;
+		var top_left_margin = 15;
+		var PDF_Width = HTML_Width+(top_left_margin*2);
+		var PDF_Height: any = (PDF_Width*1.5)+(top_left_margin*2);
+		var canvas_image_width = HTML_Width;
+		var canvas_image_height = HTML_Height;
+		
+		var totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
+    
+    let DATA: any = document.getElementById('pdfTable');
     html2canvas(DATA, {useCORS: true}).then((canvas) => {
-      let fileWidth = 208;
-      let fileHeight = (canvas.height * fileWidth) / canvas.width;
-      const FILEURI = canvas.toDataURL('image/png');
-      let PDF = new jsPDF('p', 'mm', 'a4');
-      let position = 0;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
-      let date = new Date();
-      console.log(date);
-      PDF.save('export-'+date+'.pdf');
+		// html2canvas($(".pdfTable")[0],{allowTaint:true}).then(function(canvas) {
+			canvas.getContext('2d');
+			
+			console.log(canvas.height+"  "+canvas.width);
+			
+			
+			var imgData = canvas.toDataURL("image/jpeg", 1.0);
+			var pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
+		    pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
+			
+			
+			for (var i = 1; i <= totalPDFPages; i++) { 
+				// pdf.addPage(PDF_Width, PDF_Height);
+				// pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
+			}		
+		    pdf.save("export-"+this.date+".pdf");
     });
+    document.getElementById('pdfTable')?.setAttribute('style', ' display: none;')
+        
+    // let DATA: any = document.getElementById('pdfTable');
+    // html2canvas(DATA, {useCORS: true}).then((canvas) => {
+    //   let fileWidth = 208;
+    //   let fileHeight = (canvas.height * fileWidth) / canvas.width;
+    //   const FILEURI = canvas.toDataURL('image/png');
+    //   let PDF = new jsPDF('p', 'mm', 'a4');
+    //   let position = 0;
+    //   PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+    //   PDF.save('export-'+this.date+'.pdf');
+    // });
   }
 
   getRandomColor() {
