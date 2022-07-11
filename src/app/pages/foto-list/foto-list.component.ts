@@ -42,13 +42,14 @@ export class FotoListComponent implements OnInit {
   checkbox_checked: boolean = true;
   checkbox_checked2: boolean = false;
   state: any;
+  irw:number = 2000;
 
   constructor(private http: HttpClient, private global: GlobalService, private modalService: NgbModal, private uploadService: FileUploadService, private elementRef:ElementRef, private renderer: Renderer2, private toastr: ToastrService, private _decimalPipe: DecimalPipe, private rightClickDisable: DisableRightClickService) { }
 
   ngOnInit(): void {
     this.callHaystack();
     this.callPotrait();    
-    this.rightClickDisable.disableRightClick();
+    // this.rightClickDisable.disableRightClick();
     this.progressInfos = []
     this.message = [];
     this.previews = [];
@@ -385,5 +386,67 @@ export class FotoListComponent implements OnInit {
     for (var i = 0; i < 6; i++) {
         this.color += letters[Math.floor(Math.random() * 16)];
     }
-}
+  }
+
+  settings(event: any){ 
+    let setting = document.getElementById('treshold')?.setAttribute('disabled', "")
+                  document.getElementById('treshold')?.setAttribute('class', "form-control bg-dark text-muted")
+                  document.getElementById('ar')?.setAttribute('disabled', "")
+                  document.getElementById('dra')?.setAttribute('disabled', "")
+                  document.getElementById('irw')?.setAttribute('disabled', "")
+                  document.getElementById('irw')?.setAttribute('class', "form-control bg-dark text-muted")
+                  document.getElementById('fdt')?.setAttribute('disabled', "")
+                  document.getElementById('fdt')?.setAttribute('class', "form-control bg-dark text-muted")
+
+    let target = event.target.value;
+    if (target === "settings1"){
+      setting
+      document.getElementById('satu')?.setAttribute('class', "btn btn-2")
+      document.getElementById('dua')?.setAttribute('class', "btn btn-three")
+      document.getElementById('tiga')?.setAttribute('class', "btn btn-three")
+      document.getElementById('empat')?.setAttribute('class', "btn btn-three")
+      document.getElementById('cust')?.setAttribute('class', "btn btn-three")
+      this.irw = 200;
+    }else if (target === "settings2"){
+      setting
+      document.getElementById('satu')?.setAttribute('class', "btn btn-three")
+      document.getElementById('dua')?.setAttribute('class', "btn btn-2")
+      document.getElementById('tiga')?.setAttribute('class', "btn btn-three")
+      document.getElementById('empat')?.setAttribute('class', "btn btn-three")
+      document.getElementById('cust')?.setAttribute('class', "btn btn-three")
+      this.irw = 300;
+    }else if (target === "settings3"){
+      setting
+      document.getElementById('satu')?.setAttribute('class', "btn btn-three")
+      document.getElementById('dua')?.setAttribute('class', "btn btn-three")
+      document.getElementById('tiga')?.setAttribute('class', "btn btn-2")
+      document.getElementById('empat')?.setAttribute('class', "btn btn-three")
+      document.getElementById('cust')?.setAttribute('class', "btn btn-three")
+      this.irw = 500;
+    }else if (target === "settings4"){
+      setting
+      document.getElementById('satu')?.setAttribute('class', "btn btn-three")
+      document.getElementById('dua')?.setAttribute('class', "btn btn-three")
+      document.getElementById('tiga')?.setAttribute('class', "btn btn-three")
+      document.getElementById('empat')?.setAttribute('class', "btn btn-2")
+      document.getElementById('cust')?.setAttribute('class', "btn btn-three")
+      this.irw = 2000;
+    }else if (target === "custom"){
+      document.getElementById('treshold')?.removeAttribute('disabled')
+      document.getElementById('treshold')?.setAttribute('class', "form-control text-light bg-dark")
+      document.getElementById('ar')?.removeAttribute('disabled')
+      document.getElementById('dra')?.removeAttribute('disabled')
+      document.getElementById('irw')?.removeAttribute('disabled')
+      document.getElementById('irw')?.setAttribute('class', "form-control text-light bg-dark")
+      document.getElementById('fdt')?.removeAttribute('disabled')
+      document.getElementById('fdt')?.setAttribute('class', "form-control text-light bg-dark")
+
+      document.getElementById('satu')?.setAttribute('class', "btn btn-three")
+      document.getElementById('dua')?.setAttribute('class', "btn btn-three")
+      document.getElementById('tiga')?.setAttribute('class', "btn btn-three")
+      document.getElementById('empat')?.setAttribute('class', "btn btn-three")
+      document.getElementById('cust')?.setAttribute('class', "btn btn-2")
+
+    }
+  }
 }

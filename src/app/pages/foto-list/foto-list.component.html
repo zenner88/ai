@@ -103,7 +103,7 @@
                 </div>
                 <div class="card-footer text-muted bgBox">
                   <div class="row">                    
-                    <div class="col-8">
+                    <div class="col-9">
                       <div class="row">
                         <div class="col-5">
                           <div class="two" style="text-align: left;">
@@ -116,11 +116,30 @@
                           <div class="collapse" id="multiCollapseExample1">
                             <div class="card border-light p-2 mt-2 bgBox">
                               <div class="row">
+                                <div class="col-12">
+                                  <input type="radio" class="btn-check" name="options" id="option5" autocomplete="off" (click)="settings($event)" value="custom">
+                                  <label class="btn btn-2" for="option5" id="cust">Custom</label>
+
+                                  <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" (click)="settings($event)" value="settings1">
+                                  <label class="btn btn-three" for="option1" id="satu">Settings 1</label>
+
+                                  <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off" (click)="settings($event)" value="settings2">
+                                  <label class="btn btn-three" for="option2" id="dua">Settings 2</label>
+
+                                  <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off" (click)="settings($event)" value="settings3">
+                                  <label class="btn btn-three" for="option3" id="tiga">Settings 3</label>
+
+                                  <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off" (click)="settings($event)" value="settings4">
+                                  <label class="btn btn-three" for="option4" id="empat">Settings 4</label>
+                                </div>
+                              </div>
+                              <HR>
+                              <div class="row">
                                 <div class="col-6">
                                   <p class="text-light" style="text-align: left;">Presentase</p>
                                 </div>
                                 <div class="col-6">
-                                  <input type="number" class="form-control text-light bg-dark" id="treshold" value=97>
+                                  <input type="number" class="form-control text-light bg-dark" id="treshold" value=95>
                                 </div>
                               </div>
                               <div class="row">
@@ -148,7 +167,7 @@
                                   <p class="text-light" style="text-align: left;">Internal Resize Width</p>
                                 </div>
                                 <div class="col-6">
-                                  <input type="number" class="form-control text-light bg-dark" id="irw" value=2000>
+                                  <input type="number" class="form-control text-light bg-dark" id="irw" value={{irw}} >
                                 </div>
                               </div>
                               <div class="row">
@@ -156,7 +175,7 @@
                                   <p class="text-light" style="text-align: left;">Face Detection Threshold</p>
                                 </div>
                                 <div class="col-6">
-                                  <input type="number" class="form-control text-light bg-dark" id="fdt" value=5>
+                                  <input type="number" class="form-control text-light bg-dark" id="fdt" value=1>
                                 </div>
                               </div>
                             </div>
@@ -165,7 +184,7 @@
                       </div>
 
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
                       <div class="btn btn-2" (click)="clearSelection()">
                       <span>Clear</span>
                       </div>
