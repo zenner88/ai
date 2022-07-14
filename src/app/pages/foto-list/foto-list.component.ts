@@ -12,6 +12,8 @@ import html2canvas from 'html2canvas';
 import * as $ from "jquery";
 import { TitleCasePipe } from '@angular/common';
 import { DisableRightClickService } from '../../disable-right-click.service';
+import { StorageService } from './../../_services/storage.service';
+import { AuthService } from './../../_services/auth.service';
 
 declare var window: any;
 @Component({
@@ -44,10 +46,16 @@ export class FotoListComponent implements OnInit {
   state: any;
   irw:number = 2000;
   date = new Date();
+  isLoggedIn: any;
+  name: any;
 
-  constructor(private http: HttpClient, private global: GlobalService, private modalService: NgbModal, private uploadService: FileUploadService, private elementRef:ElementRef, private renderer: Renderer2, private toastr: ToastrService, private _decimalPipe: DecimalPipe, private rightClickDisable: DisableRightClickService) { }
+  constructor(private http: HttpClient, private global: GlobalService, private modalService: NgbModal, private uploadService: FileUploadService, private elementRef:ElementRef, private renderer: Renderer2, private toastr: ToastrService, private _decimalPipe: DecimalPipe, private rightClickDisable: DisableRightClickService, private storageService: StorageService, private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.isLoggedIn = this.storageService.isLoggedIn();
+    this.name = this.storageService.getUser().name;
+    console.log(this.isLoggedIn)
+    
     this.callHaystack();
     this.callPotrait();    
     // this.rightClickDisable.disableRightClick();
@@ -497,5 +505,10 @@ export class FotoListComponent implements OnInit {
       document.getElementById('cust')?.setAttribute('class', "btn btn-2")
 
     }
+  }
+
+  logout(): void {
+    this.authService.logout()
+    window.location.reload();
   }
 }

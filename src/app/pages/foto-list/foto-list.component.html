@@ -1,4 +1,11 @@
-<div class="container-fluid p-2">
+<header class="navbar navbar-dark sticky-top flex-md-nowrap p-0 shadow bgBox text-light">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href>AI Face Detection</a> 
+  <div class="d-flex p-2" *ngIf="isLoggedIn">
+      <!-- <p>{{name}}</p> -->
+      <button type="button" class="btn btn-outline-light" (click)="logout()"><i class="fa fa-power-off text-danger mx-2 btn-xl"></i></button>
+  </div>
+</header>
+<div class="container-fluid">
     <div class="row">
         <div class="col-5 py-2 px-md-1">
             <div class="card bgBox">
@@ -212,6 +219,7 @@
               </div>
             </div>
     </div>
+</div>
 </div>
 
 <!-- modal haystack  -->

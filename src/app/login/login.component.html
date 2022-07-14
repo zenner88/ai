@@ -1,0 +1,44 @@
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card border-0 shadow rounded-3 my-5 bgBox">
+          <div class="card-body p-4 p-sm-5 ">
+            <h5 class="card-title text-center mb-5 text-light fs-5">SIGN IN</h5>
+            <form *ngIf="!isLoggedIn" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" name="username" [(ngModel)]="form.username" required #username="ngModel">
+                <label for="floatingInput">Username</label>
+              </div>
+              <div
+                  class="text-center alert-danger p-1"
+                  role="alert"
+                  *ngIf="username.errors && f.submitted">
+                  Username is required!
+                </div>
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" [(ngModel)]="form.password" required #password="ngModel">
+                <label for="floatingPassword">Password</label>
+              </div>
+              <div
+              class="text-center alert-warning p-1"
+              role="alert"
+              *ngIf="password.errors && f.submitted"
+              >
+              <div *ngIf="password.errors['required']">Password is required</div>
+              <div *ngIf="password.errors['minlength']">
+                Password must be at least 6 characters
+              </div>
+          </div>
+              
+              <div class="d-grid">
+                <button class="btn btn-primary btn-login text-uppercase fw-bold bgBox" type="submit">Sign
+                  in</button>
+              </div>
+              <hr class="my-4">
+              
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -15,13 +15,16 @@ import 'bootstrap/dist/js/bootstrap.bundle';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import {DecimalPipe} from '@angular/common';
+import { LoginComponent } from './login/login.component';
+import { httpInterceptorProviders } from './_helpers/http.interceptor';
 registerLocaleData(localeId, 'id'); 
 
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
-    FotoListComponent
+    FotoListComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,7 @@ registerLocaleData(localeId, 'id');
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(),
   ],
-  providers: [{ provide: LOCALE_ID, useValue: "id-ID" }, UpperCasePipe, GlobalService, DecimalPipe],
+  providers: [{ provide: LOCALE_ID, useValue: "id-ID" }, UpperCasePipe, GlobalService, DecimalPipe, httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
