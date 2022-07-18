@@ -7,14 +7,15 @@ import { AuthService } from './_services/auth.service';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  // { path: '', component: LoginComponent },
+  { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   // { path: 'dashboard', component: FotoListComponent },
   { path: '', component: FotoListComponent, canActivate: [AuthService] },
   { path: 'foto-list', component: FotoListComponent, canActivate: [AuthService] },
   {
     path: '**',
-    component: LoginComponent
+    redirectTo: 'login',
+    pathMatch: 'full'
   }
 ];
 
