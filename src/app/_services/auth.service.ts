@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UrlTree } from '@angular/router';
+import { UrlTree, Router } from '@angular/router';
 import { StorageService } from './storage.service';
 
 const AUTH_API = 'https://api.brimob.id:5000/cc/';
@@ -12,7 +12,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient, private auth: StorageService) {}
+  constructor(private http: HttpClient, private auth: StorageService, private router: Router) {}
   login(username: string, password: string): Observable<any> {
     return this.http.post(
       AUTH_API + 'login_user',
@@ -36,6 +36,9 @@ export class AuthService {
   }
   logout() {
     window.sessionStorage.clear();
+    // this.router.navigate(['/login'])
+    window.location.reload();
+
   }
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       if (this.auth.isLoggedIn()) {
