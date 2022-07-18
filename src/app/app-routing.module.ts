@@ -6,8 +6,8 @@ import { LoginComponent } from './login/login.component';
 import { AuthService } from './_services/auth.service';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  // { path: '', component: LoginComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   // { path: 'dashboard', component: FotoListComponent },
   { path: '', component: FotoListComponent, canActivate: [AuthService] },
@@ -16,8 +16,6 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'login',
     pathMatch: 'full'
-    // canActivate: [AuthGuard],
-
   }
 ];
 
