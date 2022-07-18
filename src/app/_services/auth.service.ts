@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { UrlTree, Router } from '@angular/router';
 import { StorageService } from './storage.service';
 
-const AUTH_API = 'http://202.67.10.238:5000/cc/';
+const AUTH_API = 'https://api.brimob.id:5000/cc/';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
