@@ -36,9 +36,7 @@ export class AuthService {
   }
   logout() {
     window.sessionStorage.clear();
-    this.router.navigate(['/login'])
-    window.location.reload();
-
+    this.router.navigate(['/'])
   }
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       if (this.auth.isLoggedIn()) {

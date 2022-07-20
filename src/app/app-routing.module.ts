@@ -10,19 +10,19 @@ const routes: Routes = [
   // { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   // { path: 'dashboard', component: FotoListComponent },
-  { path: '', component: FotoListComponent, canActivate: [AuthService] },
   { path: 'foto-list', component: FotoListComponent, canActivate: [AuthService] },
-  {
-    path: '**',
-    redirectTo: 'login',
-    pathMatch: 'full'
-    // canActivate: [AuthGuard],
+  // // { path: '', component: FotoListComponent, canActivate: [AuthService] },
+  // {
+  //   path: '**',
+  //   redirectTo: 'login',
+  //   pathMatch: 'full'
+  //   // canActivate: [AuthGuard],
 
-  }
+  // }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

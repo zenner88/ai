@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
     if (this.storageService.isLoggedIn()) {
       this.isLoggedIn = true;
       this.roles = this.storageService.getUser().roles;
+      this.router.navigate(['/foto-list'])
     }
   }
   onSubmit(): void {
@@ -33,7 +34,7 @@ export class LoginComponent implements OnInit {
           this.isLoggedIn = true;
           this.roles = this.storageService.getUser().level_user;
           this.router.navigate(['foto-list']);
-          // this.reloadPage();
+          this.reloadPage();
         }else{
           this.isLoginFailed = true;
         }
